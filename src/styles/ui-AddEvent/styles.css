@@ -1,0 +1,19 @@
+.float-button{
+    background-color: #5877ff;
+    border-radius: 50%;
+    padding: 10px;
+    position: absolute;
+    right: 40px;
+    bottom: 60px;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 0 
+}
+.float-button:hover{
+    background-color: #3e58ce;
+}

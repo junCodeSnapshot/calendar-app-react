@@ -1,0 +1,9 @@
+.modal-datepicker{
+    display: flex;
+    flex-direction: column;
+}
+
+.react-datetime-picker__wrapper{
+    border-radius: 4px;
+    padding: 5px;
+}

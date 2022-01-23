@@ -1,0 +1,19 @@
+.calendar-height-conf{
+    height: 100vh;
+    width: 100vw;
+}
+
+.calendar-screen{
+    display: flex;
+    flex-flow: column;
+    height: 100vh;
+}
+
+.rbc-calendar{
+    height: 100%;
+}
+
+.renderEvent p{
+    margin-bottom: 0;
+    font-size: 10px;
+}
