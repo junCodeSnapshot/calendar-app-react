@@ -4,7 +4,7 @@ import { types } from "../types/types"
 
 export const createNote = (note) => ({
     type: types.createNote,
-    payload: note
+    payload: {note}
 })
 
 export const deleteNote = (id) => ({

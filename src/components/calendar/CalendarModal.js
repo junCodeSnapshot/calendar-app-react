@@ -11,6 +11,7 @@ import '../../styles/CalendarDatePicker/style.css'
 import DateTimePicker from 'react-datetime-picker'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../actions/modal'
+import { createNote } from '../../actions/notes'
 
 const customStyles = {
     content: {
@@ -72,7 +73,8 @@ export const CalendarModal = () => {
     //MANEJAR EL SUBMIT DEL FORMULARIO        
     const handleSubmit = (e) => {
         e.preventDefault()
-        //INICIA EVALUACION DE LOS DATOS ENVIADOS ANTES DE PASARLOS AL REDUCER
+        dispatch(createNote(formValues))
+        dispatch(closeModal())
 
     }
 
@@ -86,7 +88,6 @@ export const CalendarModal = () => {
 
             <Modal
                 isOpen={isOpen}
-                // onAfterOpen={afterOpenModal}
                 onRequestClose={overlayRefFunction}
                 style={customStyles}
                 className="modal"
