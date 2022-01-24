@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import { CalendarEventRender } from './CalendarEventRender'
@@ -8,36 +8,29 @@ import 'moment/locale/es'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import '../../styles/CalendarScreen/style.css'
 import { CalendarModal } from './CalendarModal'
-import {useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AddEventButton } from '../ui/AddEventButton'
+import { momentConfEs } from '../../helpers/momentConfEs'
+import { activeNoteAction, cleanActiveNoteAction } from '../../actions/notes'
+import { DeleteFloatingButton } from '../ui/DeleteFloatingButton'
+import { openModal } from '../../actions/modal'
 
 
-const localizer = momentLocalizer(moment)
-// const startDate = moment()
-// const endDate = startDate.clone().add(1, 'hours')
 
-
-// const event = [{
-//     title: 'Some Text',
-//     note: 'some note',
-//     start: startDate.toDate(),
-//     end: endDate.toDate()
-// },
-// {
-//     title: 'Some Text',
-//     note: 'some note',
-//     start: startDate.toDate(),
-//     end: endDate.toDate()
-// }]}
+momentConfEs()
+const localizer = momentLocalizer(moment);
 
 
 export const CalendarScreen = () => {
+    const dispatch = useDispatch();
 
-    const [view, setview] = useState('month')
-    let lastView = localStorage.getItem('view')
+
+    const [view, setview] = useState('month');
+    let lastView = localStorage.getItem('view');
     //TODO: Manejar el si hay nota selecta renderizar un boton para borrarla
 
-    const { activeNote, notes } = useSelector(state => state.notes)
+    const { notes, activeNote } = useSelector(state => state.notes);
+
     const styleGetter = () => {
         const style = {
             backgroundColor: 'rgba(70,90,190)',
@@ -45,20 +38,26 @@ export const CalendarScreen = () => {
             // height: 'fit-content'
         }
         return { style }
-    }
+    };
 
     const onSelectSlot = ({ action }) => {
-        //TODO: Crear una accion cuando sea doble click
-    }
+        console.log(action);
+        // TODO:Hacer evento de doble click en fecha cree un modal con la fecha seleccionada solo para agregar titulo
+         if(action ==="click"){
+            dispatch(cleanActiveNoteAction());
+        }
+    };
 
-    const onSelectEvent = (e) => {
+    const onSelectEvent = (selectedNote) => {
         //TODO: Modificar el estado activo de nota en el reducer
-    }
+        dispatch(activeNoteAction(selectedNote));
+        dispatch(openModal());
+    };
 
     const usehandleView = (currentView) => {
-        localStorage.setItem('view', currentView)
-        setview(currentView)
-    }
+        localStorage.setItem('view', currentView);
+        setview(currentView);
+    };
 
     return (
         <div className='calendar-height-conf'>
@@ -81,6 +80,7 @@ export const CalendarScreen = () => {
             />
             <CalendarModal />,
             <AddEventButton />
+            {activeNote && <DeleteFloatingButton />}
         </div>
-    )
+    );
 }

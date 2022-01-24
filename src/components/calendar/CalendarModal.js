@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import moment from 'moment'
 import 'react-datetime-picker/dist/DateTimePicker.css'
@@ -11,7 +11,7 @@ import '../../styles/CalendarDatePicker/style.css'
 import DateTimePicker from 'react-datetime-picker'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeModal } from '../../actions/modal'
-import { createNote } from '../../actions/notes'
+import { cleanActiveNoteAction, createNoteAction } from '../../actions/notes'
 
 const customStyles = {
     content: {
@@ -27,60 +27,78 @@ Modal.setAppElement('#root');
 
 const initialDate = moment().minutes(0).seconds(0).add(1, 'hours')
 const endDate = initialDate.clone().add(1, 'hours')
-
+const initialState = {
+    title: '',
+    note: '',
+    start: initialDate.toDate(),
+    end: endDate.toDate()
+}
 
 
 export const CalendarModal = () => {
-    const dispatch = useDispatch()
-    const { isOpen } = useSelector(state => state.modal)
+    const dispatch = useDispatch();
+    const { isOpen } = useSelector(state => state.modal);
+    const { activeNote } = useSelector(state => state.notes);
 
     //CONJUNTO DE LOS USESTATES
     const [startDateForm, onStartChange] = useState(initialDate.toDate());
     const [endDateForm, onEndChange] = useState(endDate.toDate());
-    const [formValues, handleInputChange] = useState({
-        title: '',
-        note: '',
-        start: initialDate.toDate(),
-        end: endDate.toDate()
-    })
+    const [formValues, handleInputChange] = useState(initialState);
+
+
+
+
+    //VERIFICAR EL ESTADO DE NOTA ACTIVA PARA SABER QUE DEBEMOS DESPLEGAR COMO INITIAL STATE EN EL MODAL
+    useEffect(() => {
+        if (activeNote) {
+            handleInputChange(activeNote);
+            onStartChange(activeNote.start);
+            onEndChange(activeNote.end);
+
+        } else {
+            handleInputChange(initialState);
+        }
+    }, [activeNote, handleInputChange, onStartChange, onEndChange]);
 
 
     //MANEJAR LOS CAMBIOS DE FECHA Y DEL FORMULARIO
     const handleStartDateChange = (e) => {
-        onStartChange(e)
+        onStartChange(e);
         handleInputChange({
             ...formValues,
             start: e
-        })
-    }
+        });
+    };
+
 
     const handleEndDateChange = (e) => {
-        onEndChange(e)
+        onEndChange(e);
         handleInputChange({
             ...formValues,
             end: e
-        })
-    }
+        });
+    };
 
     const formValuesChange = ({ target }) => {
         handleInputChange({
             ...formValues,
             [target.name]: target.value
-        })
-    }
+        });
+    };
 
-    const { title, note, start, end } = formValues
+    const { title, note, start, end } = formValues;
     //MANEJAR EL SUBMIT DEL FORMULARIO        
     const handleSubmit = (e) => {
-        e.preventDefault()
-        dispatch(createNote(formValues))
-        dispatch(closeModal())
+        e.preventDefault();
+        dispatch(createNoteAction(formValues));
+        dispatch(closeModal());
 
-    }
+    };
 
-    const overlayRefFunction = () => {
-        dispatch(closeModal())
-    }
+    const handleCloseModal = () => {
+        dispatch(closeModal());
+        dispatch(cleanActiveNoteAction());
+    };
 
 
     return (
@@ -88,14 +106,14 @@ export const CalendarModal = () => {
 
             <Modal
                 isOpen={isOpen}
-                onRequestClose={overlayRefFunction}
+                onRequestClose={handleCloseModal}
                 style={customStyles}
                 className="modal"
                 contentLabel="Example Modal"
                 overlayClassName="modal-fondo"
                 shouldCloseOnOverlayClick={true}
             >
-                <button className='closeBTN' onClick={overlayRefFunction}>x</button>
+                <button className='closeBTN' onClick={handleCloseModal}>x</button>
                 <form className='formModal' onSubmit={handleSubmit}>
                     <h2 className='modal-title'>Create a note</h2>
                     <div className="mb-3">

@@ -2,22 +2,26 @@
 
 import { types } from "../types/types"
 
-export const createNote = (note) => ({
+export const createNoteAction = (note) => ({
     type: types.createNote,
     payload: {note}
 })
 
-export const deleteNote = (id) => ({
+export const deleteNoteAction = (id) => ({
     type: types.deleteNote,
     payload: id
 })
 
-export const activeNote = (note) => ({
+export const activeNoteAction = (note) => ({
     type: types.activeNote,
+    payload: {...note}
+})
+
+export const actualizeNoteAction = (note) => ({
+    type: types.actualizeNote,
     payload: note
 })
 
-export const actualizeNote = (note) => ({
-    type: types.actualizeNote,
-    payload: note
+export const cleanActiveNoteAction = () => ({
+    type: types.cleanActiveNote
 })
