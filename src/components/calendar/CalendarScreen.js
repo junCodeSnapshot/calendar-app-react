@@ -65,7 +65,7 @@ export const CalendarScreen = () => {
                 localizer={localizer}
                 events={notes}
                 onView={usehandleView}
-                view={lastView}
+                view={lastView || 'month'}
                 startAccessor="start"
                 endAccessor="end"
                 eventPropGetter={styleGetter}
