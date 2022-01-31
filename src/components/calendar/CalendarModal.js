@@ -127,7 +127,7 @@ export const CalendarModal = () => {
         closeModal()
 
     }
-
+ 
 
     return (
         <Modal

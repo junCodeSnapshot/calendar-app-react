@@ -7,4 +7,3 @@ ReactDOM.render(
     <CalendarApp />,
   document.getElementById('root')
 );
-
