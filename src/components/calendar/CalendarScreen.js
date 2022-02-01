@@ -43,7 +43,7 @@ export const CalendarScreen = () => {
     const onSelectSlot = ({ action }) => {
         console.log(action);
         // TODO:Hacer evento de doble click en fecha cree un modal con la fecha seleccionada solo para agregar titulo
-         if(action ==="click"){
+        if (action === "click") {
             dispatch(cleanActiveNoteAction());
         }
     };
@@ -61,6 +61,7 @@ export const CalendarScreen = () => {
 
     return (
         <div className='calendar-height-conf'>
+
             <Calendar
                 localizer={localizer}
                 events={notes}
@@ -78,9 +79,10 @@ export const CalendarScreen = () => {
                         event: CalendarEventRender
                     }}
             />
-            <CalendarModal />,
             <AddEventButton />
             {activeNote && <DeleteFloatingButton />}
+            <CalendarModal />,
+
         </div>
     );
 }
